@@ -59,5 +59,11 @@
 			"value": "localhost:8082",
 			"type": "string"
 		}
+<<<<<<< HEAD
 	]
+=======
+		
+	]
+	
+>>>>>>> 7319fd4 (First release)
 }

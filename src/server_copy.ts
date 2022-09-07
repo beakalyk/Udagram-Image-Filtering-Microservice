@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { url } from 'inspector';
 
 (async () => {
 
@@ -12,6 +13,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+  
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
@@ -19,6 +21,22 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // IT SHOULD
   //    1
   //    1. validate the image_url query
+  app.get("/filteredimage?image_url={{URL}}",async(req,res)=>{
+    
+    let { image_url } = req.params.image_url;
+    //Validate url
+    const isValideUrl = image_url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    if(isValideUrl == null)
+      return res.status(400).send(`Inavlid url! Try again with valid url`);
+    else{
+    //Process Image
+      const filteredImage = filterImageFromURL(image_url);
+      if(filteredImage===undefined||filteredImage===null)
+      return res.status(400).send(`Unable to filter image`);
+    else
+      return res.status(200).sendFile(filteredImage+'');
+    }
+  })
   //    2. call filterImageFromURL(image_url) to filter the image
   //    3. send the resulting file in the response
   //    4. deletes any files on the server on finish of the response
