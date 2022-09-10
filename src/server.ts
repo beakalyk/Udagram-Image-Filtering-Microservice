@@ -45,11 +45,11 @@ const url = require('url');
      
      
      if(!parsedURL.protocol || !parsedURL.slashes || !parsedURL.hostname || !parsedURL.pathname){
-       return res.status(400).send("Malformed URL.");
+       return res.status(400).send("Please use a correct  URL.");
 
      } 
      if(jimpSuportedList.indexOf(parsedURL.pathname.split(".")[1]) === -1){
-       return res.status(415).send("Image extension is not supported");
+       return res.status(415).send(" unsupported extension");
      }
 
     
