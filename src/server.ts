@@ -41,18 +41,18 @@ const url = require('url');
        return res.status(400).send("Missing image URL.");
      }
 
-     let parsedURL = url.parse(image_url, true);
+     let imagesURL = url.parse(image_url, true);
      
      
-     if(!parsedURL.protocol || !parsedURL.slashes || !parsedURL.hostname || !parsedURL.pathname){
+     if(!imagesURL.protocol || !imagesURL.slashes || !imagesURL.hostname || !imagesURL.pathname){
        return res.status(400).send("Please use a correct  URL.");
 
      } 
-     if(jimpSuportedList.indexOf(parsedURL.pathname.split(".")[1]) === -1){
-       return res.status(415).send(" unsupported extension");
-     }
+    if(jimpSuportedList.indexOf(imagesURL.pathname.split(".")[1]) === -1){
+      return res.status(415).send(" unsupported extension");
+    }
 
-    
+  
      let filteredImageURI: string  = await filterImageFromURL(image_url);
      res.status(200).sendFile(filteredImageURI);
      res.on('finish', () => deleteLocalFiles([filteredImageURI]));

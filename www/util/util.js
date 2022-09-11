@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const Jimp = require("jimp");
+const axios_1 = __importDefault(require("axios"));
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
 // returns the absolute path to the local image
@@ -24,10 +25,11 @@ function filterImageFromURL(inputURL) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const photo = yield Jimp.read(inputURL);
+                const imageBuffer = yield getImageBuffer(inputURL);
+                const photo = yield Jimp.read(imageBuffer);
                 const outpath = "/tmp/filtered." + Math.floor(Math.random() * 2000) + ".jpg";
                 yield photo
-                    .resize(256, 256) // resize
+                    .resize(256, Jimp.AUTO) // resize
                     .quality(60) // set JPEG quality
                     .greyscale() // set greyscale
                     .write(__dirname + outpath, (img) => {
@@ -41,6 +43,16 @@ function filterImageFromURL(inputURL) {
     });
 }
 exports.filterImageFromURL = filterImageFromURL;
+function getImageBuffer(imageUrl) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let imageResponse = yield axios_1.default({
+            method: 'get',
+            url: imageUrl,
+            responseType: 'arraybuffer'
+        });
+        return imageResponse.data;
+    });
+}
 // deleteLocalFiles
 // helper function to delete files on the local disk
 // useful to cleanup after tasks
