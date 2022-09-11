@@ -67,7 +67,6 @@ const url = require('url');
      }
 
     
- 8b0c1ada286fa47d5478ba3b231a5e531e3d36c4
      let filteredImageURI: string  = await filterImageFromURL(image_url);
      res.status(200).sendFile(filteredImageURI);
      res.on('finish', () => deleteLocalFiles([filteredImageURI]));
