@@ -41,6 +41,7 @@ const url = require('url');
        return res.status(400).send("Missing image URL.");
      }
 
+
      let imagesURL = url.parse(image_url, true);
      
      
@@ -53,6 +54,20 @@ const url = require('url');
     }
 
   
+
+     let parsedURL = url.parse(image_url, true);
+     
+     
+     if(!parsedURL.protocol || !parsedURL.slashes || !parsedURL.hostname || !parsedURL.pathname){
+       return res.status(400).send("Please use a correct  URL.");
+
+     } 
+     if(jimpSuportedList.indexOf(parsedURL.pathname.split(".")[1]) === -1){
+       return res.status(415).send(" unsupported extension");
+     }
+
+    
+ 8b0c1ada286fa47d5478ba3b231a5e531e3d36c4
      let filteredImageURI: string  = await filterImageFromURL(image_url);
      res.status(200).sendFile(filteredImageURI);
      res.on('finish', () => deleteLocalFiles([filteredImageURI]));
