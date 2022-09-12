@@ -11,8 +11,7 @@ const url = require('url');
   // Set the network port
   const port = process.env.PORT || 8082;
 
-  // Supported image exttensions from https://www.npmjs.com/package/jimp
-  const jimpSuportedList: string[] = ['jpg', 'png', 'bmp', 'tiff', 'gif'];
+  
 
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
